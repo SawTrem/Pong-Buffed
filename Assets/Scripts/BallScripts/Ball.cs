@@ -8,6 +8,8 @@ public class Ball : MonoBehaviour
     private Rigidbody2D _rigidBody;
     private Vector2 _currentVector;
 
+    [SerializeField]private SoundPlayer _soundPlayer;
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -16,6 +18,7 @@ public class Ball : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        _soundPlayer.PlayHitSoundAction.Invoke();
         float yvalue = 0.0f;
         if (collision.gameObject.GetComponent<Player>())
         {
