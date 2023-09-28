@@ -3,8 +3,8 @@ using UnityEngine;
 
 public enum PlayerSide
 {
-    rightPlayer = 1,
-    leftPlayer = 2
+    rightPlayer,
+    leftPlayer
 }
 
 public class GameManager : MonoBehaviour

@@ -9,8 +9,6 @@ public enum PlayerAxes
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _movementSpeed = 5.0f;
-    [SerializeField] private PlayerAxes _currentAxis  = PlayerAxes.Vertical; 
-    private string[] axisMode = { "Vertical","Vertical2"};
 
     private Rigidbody2D _rigidBody;
 
@@ -19,8 +17,8 @@ public class Player : MonoBehaviour
         _rigidBody = GetComponent<Rigidbody2D>();        
     }
 
-    private void Update()
-    {
-        _rigidBody.velocity = Vector2.up * Input.GetAxis(axisMode[(int)_currentAxis]) * _movementSpeed;
+    public void Move(Vector2 direction) 
+    { 
+        _rigidBody.velocity = direction * _movementSpeed;
     }
 }
