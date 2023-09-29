@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
 public class Player : MonoBehaviour,IAbilitable,IBuffable
 {
     [SerializeField] private Ball _ball;
 
-    readonly private float _defaultMovementSpeed = 15;
+    readonly private float _defaultMovementSpeed = 15.0f;
     readonly private Vector2 _defaultScale = Vector2.one;
-    public float CurrentMovementSpeed {get; set;}
-    public Vector2 CurrentScale { get; set; }
+    public float CurrentMovementSpeed { get; set; } = 15.0f;
+    public Vector2 CurrentScale { get; set; } = Vector2.one;
 
     private Rigidbody2D _rigidBody;
 
@@ -23,8 +22,6 @@ public class Player : MonoBehaviour,IAbilitable,IBuffable
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        CurrentMovementSpeed = _defaultMovementSpeed;
-        CurrentScale = _defaultScale;
         transform.localScale = CurrentScale;
     }
 
