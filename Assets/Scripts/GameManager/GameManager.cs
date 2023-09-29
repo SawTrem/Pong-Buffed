@@ -7,13 +7,15 @@ public enum PlayerSide
     leftPlayer
 }
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IVisitor
 {
     [SerializeField] private Ball _ball;
     [SerializeField] private Player _rightPlayer;
     [SerializeField] private Player _leftPlayer;
 
     [SerializeField] private Vector3 _ballPosition;
+
+    //[SrializeField]private UI basic ui; 
 
     private int _rightPlayerScore = 0;
     private int _leftPlayerScore = 0;
@@ -23,7 +25,12 @@ public class GameManager : MonoBehaviour
 
 
     public Action<PlayerSide> UpdatePlayerScore;
-    //[SrializeField]private UI basic ui; 
+
+    private void Awake()
+    {
+        _rightPlayer.SetAbility(new BallDashAbility());
+        _leftPlayer.SetAbility(new BallReverseAbility());
+    }
 
     private void StartGame() 
     { 
@@ -64,6 +71,21 @@ public class GameManager : MonoBehaviour
         _leftPlayerScore = 0;
         _rightPlayerScore = 0;
         //UI reset
+    }
+
+    public void VisitMapBuff()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void VisitBallBuff()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void VisitPlayerBuff()
+    {
+        throw new NotImplementedException();
     }
 
     private void OnEnable()
