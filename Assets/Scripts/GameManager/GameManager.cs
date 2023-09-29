@@ -30,9 +30,9 @@ public class GameManager : MonoBehaviour, IVisitor
     {
         _rightPlayer.SetAbility(new BallDashAbility());
         _leftPlayer.SetAbility(new BallReverseAbility());
-        SpeedPlayerBuff scalePlayerBuff = new()
+        ScaleBallBuff scalePlayerBuff = new()
         {
-            PlayerTarget = _rightPlayer
+            BallTarget = _ball
         };
         _rightPlayer.SetBuff(scalePlayerBuff);
     }
