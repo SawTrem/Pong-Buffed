@@ -13,9 +13,9 @@ public class GameManager : MonoBehaviour, IVisitor
     [SerializeField] private Player _rightPlayer;
     [SerializeField] private Player _leftPlayer;
 
-    [SerializeField] private Vector3 _ballPosition;
+    [SerializeField] private Vector3 _ballStartPosition;
 
-    //[SrializeField]private UI basic ui; 
+    [SerializeField] private UIManager _uiManger;
 
     private int _rightPlayerScore = 0;
     private int _leftPlayerScore = 0;
@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour, IVisitor
 
 
     public Action<PlayerSide> UpdatePlayerScore;
+
+    public static Action PauseGameAction;
+    public Action ResumeGameAction;
 
     private void Awake()
     {
@@ -48,8 +51,14 @@ public class GameManager : MonoBehaviour, IVisitor
     }
 
     private void PauseGame() 
-    { 
+    {
+        Time.timeScale = 0f;
+        _uiManger.ShowPauseAction?.Invoke();
+    }
 
+    private void ResumeGame() 
+    {
+        Time.timeScale = 1f;
     }
 
     private void UpdateScore(PlayerSide playerType) 
@@ -57,8 +66,7 @@ public class GameManager : MonoBehaviour, IVisitor
         if (playerType is PlayerSide.rightPlayer) _rightPlayerScore++;
         else _leftPlayerScore++;
         _playedRounds++;
-        //UI Update
-        Debug.Log($"Score:{_leftPlayerScore}||{_rightPlayerScore} \n Played rounds: {_playedRounds}");
+        _uiManger.UpdateGameDataAction?.Invoke(_playedRounds, _leftPlayerScore, _rightPlayerScore);
         ResetPositions();
         if (_needsToPlay == _playedRounds) { 
            RestartGame();
@@ -75,7 +83,7 @@ public class GameManager : MonoBehaviour, IVisitor
         _playedRounds = 0;
         _leftPlayerScore = 0;
         _rightPlayerScore = 0;
-        //UI reset
+        _uiManger.ResetGameDataAction?.Invoke();
     }
 
     public void VisitMapBuff()
@@ -96,9 +104,13 @@ public class GameManager : MonoBehaviour, IVisitor
     private void OnEnable()
     {
         UpdatePlayerScore += UpdateScore;
+        PauseGameAction += PauseGame;
+        ResumeGameAction += ResumeGame;
     }
     private void OnDisable()
     {
         UpdatePlayerScore -= UpdateScore;
+        PauseGameAction -= PauseGame;
+        ResumeGameAction -= ResumeGame;
     }
 }

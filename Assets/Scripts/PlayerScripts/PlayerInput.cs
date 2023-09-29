@@ -17,5 +17,9 @@ public class PlayerInput : MonoBehaviour
         {
             _player.UseAbility();
         }
+        if (Input.GetKeyDown(KeyCode.Escape)) 
+        {
+            GameManager.PauseGameAction.Invoke();
+        }
     }
 }
