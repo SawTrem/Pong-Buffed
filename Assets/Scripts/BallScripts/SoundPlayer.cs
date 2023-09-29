@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class SoundPlayer : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource soundHit;
     public Action PlayHitSoundAction;
 
     private void PlayHitSound() {
-        audioSource.Play();   
+        soundHit.Play();   
     }
 
     private void OnEnable()

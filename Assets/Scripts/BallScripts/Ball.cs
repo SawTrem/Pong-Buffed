@@ -6,6 +6,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour,IBuffable
 {
     [SerializeField] private SoundPlayer _soundPlayer;
+    [SerializeField]private ParticleSystem _particleSystem;
     
     readonly private float _defaultmovementSpeed = 7.0f;
     readonly private Vector2 _defaultScale = Vector2.one;
@@ -19,6 +20,7 @@ public class Ball : MonoBehaviour,IBuffable
 
     public Action ChangeDirectionAction;
 
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
@@ -28,6 +30,7 @@ public class Ball : MonoBehaviour,IBuffable
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _soundPlayer.PlayHitSoundAction.Invoke();
+        _particleSystem.Play();
         float yvalue;
         if (collision.gameObject.GetComponent<Player>())
         {
