@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ScaleBallBuff : BallBuff
 {
-    private float _scaleBonusValue = 0.5f;
+    readonly private float _scaleBonusValue = 0.5f;
     private Vector2 _scaledBonus = Vector2.zero;
     override public void ApplyBuff()
     {

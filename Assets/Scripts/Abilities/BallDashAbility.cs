@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class BallDashAbility : Iability
 {
-    private float _dashBall = 2.0f;
+    readonly private float _dashBall = 2.0f;
 
-    private int _cooldown = 5;
+    readonly private int _cooldown = 5;
 
     public void Accept(IVisitor visitor)
     {

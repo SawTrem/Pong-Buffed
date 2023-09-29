@@ -25,6 +25,8 @@ public class UIManager : MonoBehaviour
     public Action ResetGameDataAction;
     public Action ShowPauseAction;
     public Action ShowAbilityMenuAction;
+    public Action ShowEndGameAction;
+
     private void UpdateGameData(int roundCount, int leftPlayerScore, int rightPlayerScore)
     {
         _rightPLayerScore.text = rightPlayerScore.ToString();
@@ -36,23 +38,6 @@ public class UIManager : MonoBehaviour
         _rightPLayerScore.text = 0.ToString();
         _leftPLayerScore.text = 0.ToString();
         _roundsCount.text = 0.ToString();
-    }
-
-    public void Resume()
-    {
-        _context.text = "";
-        _context.gameObject.SetActive(false);
-        _resumeButton.gameObject.SetActive(false);
-        _exitButton.gameObject.SetActive(false);
-        _gameManager.ResumeGameAction?.Invoke();
-    }
-    public void Exit()
-    {
-
-    }
-    public void Restart()
-    {
-
     }
 
     private void ShowPauseMenu() 
@@ -70,6 +55,14 @@ public class UIManager : MonoBehaviour
         SetVisualForCards(_abilityCard3, _abilityCardGenerator.GetVisual(2));
     }
 
+    private void ShowEndMenu() 
+    {
+        _context.text = "game ended";
+        _context.gameObject.SetActive(true);
+        _restartButton.gameObject.SetActive(true);
+        _exitButton.gameObject.SetActive(true);
+    }
+
     private void SetVisualForCards(Button abilityCard,AbilityCardSettings abilityCardSettings) 
     {
         abilityCard.gameObject.SetActive(true);
@@ -85,12 +78,34 @@ public class UIManager : MonoBehaviour
         _gameManager.SetAbilityAction.Invoke(_abilityCardGenerator.GetBonus(index));
     }
 
+    public void Resume()
+    {
+        _context.text = "";
+        _context.gameObject.SetActive(false);
+        _resumeButton.gameObject.SetActive(false);
+        _exitButton.gameObject.SetActive(false);
+        _gameManager.ResumeGameAction?.Invoke();
+    }
+
+    public void Exit()
+    {
+        _gameManager.ExitAction?.Invoke();
+    }
+    public void Restart()
+    {
+        _context.gameObject.SetActive(false);
+        _restartButton.gameObject.SetActive(false);
+        _exitButton.gameObject.SetActive(false);
+        _gameManager.RestartGameAction?.Invoke();
+    }
+
     private void OnEnable()
     {
         UpdateGameDataAction += UpdateGameData;
         ResetGameDataAction += ResetGameData;
         ShowPauseAction += ShowPauseMenu;
         ShowAbilityMenuAction += ShowAbilityMenu;
+        ShowEndGameAction += ShowEndMenu;
     }
     private void OnDisable() 
     {
@@ -98,5 +113,6 @@ public class UIManager : MonoBehaviour
         ResetGameDataAction -= ResetGameData;
         ShowPauseAction -= ShowPauseMenu;
         ShowAbilityMenuAction -= ShowAbilityMenu;
+        ShowEndGameAction -= ShowEndMenu;
     }
 }

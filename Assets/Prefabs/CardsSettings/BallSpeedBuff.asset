@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49085d24af764f649ba31ec30107f615, type: 3}
   m_Name: BallSpeedBuff
   m_EditorClassIdentifier: 
-  abilityName: 
+  abilityName: BallSpeedbuf
   abilityImage: {fileID: 0}

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BallReverseAbility : Iability
 {
-    private int _coolDown = 30;
+    readonly private int _coolDown = 30;
 
     public void Accept(IVisitor visitor)
     {
@@ -13,8 +13,10 @@ public class BallReverseAbility : Iability
     {
         Ball ball = target.GetBallReference();
         Rigidbody2D ballRigidBody = ball.GetComponent<Rigidbody2D>();
-        ballRigidBody.velocity *= -1;
-        ball.ChangeDirectionAction?.Invoke();
+        Vector2 vector2 = ballRigidBody.velocity;
+        vector2.y *= -1;
+        ballRigidBody.velocity = vector2;
+        //ball.ChangeDirectionAction?.Invoke();
     }
 
     public int GetCooldown() => _coolDown;

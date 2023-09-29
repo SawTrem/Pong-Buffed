@@ -33,6 +33,7 @@ public class Player : MonoBehaviour,IAbilitable,IBuffable
     public void UseAbility() 
     {
         if (!_isAbleToUseAbility) return;
+        if (_ability is null) return;
         _ability.ActivateAbility(this);
         StartCoroutine(CoolDownAbility(_ability.GetCooldown()));
     }
@@ -64,5 +65,14 @@ public class Player : MonoBehaviour,IAbilitable,IBuffable
         if (!_listOfBuffs.Contains(buff)) return;
         _listOfBuffs.Remove(buff);
         buff.CancelBuff();
+    }
+    public void RestoreToDegaults() 
+    {
+        _listOfBuffs.Clear();
+        _ability = null;
+        _isAbleToUseAbility = true;
+        CurrentMovementSpeed = _defaultMovementSpeed;
+        CurrentScale = _defaultScale;
+        transform.localScale = CurrentScale;
     }
 }
