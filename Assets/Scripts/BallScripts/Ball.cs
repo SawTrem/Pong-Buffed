@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour
     private Vector2 _currentVector;
 
     [SerializeField]private SoundPlayer _soundPlayer;
+    [SerializeField]private ParticleSystem _particleSystem;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class Ball : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _soundPlayer.PlayHitSoundAction.Invoke();
+        _particleSystem.Play();
         float yvalue = 0.0f;
         if (collision.gameObject.GetComponent<Player>())
         {
