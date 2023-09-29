@@ -9,16 +9,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button _exitButton;
     [SerializeField] Button _restartButton;
 
+    [SerializeField] Button _abilityCard1;
+    [SerializeField] Button _abilityCard2;
+    [SerializeField] Button _abilityCard3;
+
     [SerializeField] TextMeshProUGUI _rightPLayerScore;
     [SerializeField] TextMeshProUGUI _leftPLayerScore;
     [SerializeField] TextMeshProUGUI _roundsCount;
     [SerializeField] TextMeshProUGUI _context;
 
     [SerializeField] GameManager _gameManager;
+    [SerializeField] AbilityCardGenerator _abilityCardGenerator;
 
     public Action<int, int, int> UpdateGameDataAction;
     public Action ResetGameDataAction;
     public Action ShowPauseAction;
+    public Action ShowAbilityMenuAction;
     private void UpdateGameData(int roundCount, int leftPlayerScore, int rightPlayerScore)
     {
         _rightPLayerScore.text = rightPlayerScore.ToString();
@@ -46,8 +52,9 @@ public class UIManager : MonoBehaviour
     }
     public void Restart()
     {
-        
+
     }
+
     private void ShowPauseMenu() 
     {
         _context.text = "Pause";
@@ -55,16 +62,41 @@ public class UIManager : MonoBehaviour
         _resumeButton.gameObject.SetActive(true);
         _exitButton.gameObject.SetActive(true);
     }
+
+    private void ShowAbilityMenu() 
+    {
+        SetVisualForCards(_abilityCard1 ,_abilityCardGenerator.GetVisual(0));
+        SetVisualForCards(_abilityCard2, _abilityCardGenerator.GetVisual(1));
+        SetVisualForCards(_abilityCard3, _abilityCardGenerator.GetVisual(2));
+    }
+
+    private void SetVisualForCards(Button abilityCard,AbilityCardSettings abilityCardSettings) 
+    {
+        abilityCard.gameObject.SetActive(true);
+        abilityCard.image = abilityCardSettings.abilityImage;
+        abilityCard.GetComponentInChildren<TextMeshProUGUI>().text = abilityCardSettings.name;
+    }
+
+    public void SendAbilityToGameManager(int index) 
+    {
+        _abilityCard1.gameObject.SetActive(false);
+        _abilityCard2.gameObject.SetActive(false);
+        _abilityCard3.gameObject.SetActive(false);
+        _gameManager.SetAbilityAction.Invoke(_abilityCardGenerator.GetBonus(index));
+    }
+
     private void OnEnable()
     {
         UpdateGameDataAction += UpdateGameData;
         ResetGameDataAction += ResetGameData;
         ShowPauseAction += ShowPauseMenu;
+        ShowAbilityMenuAction += ShowAbilityMenu;
     }
     private void OnDisable() 
     {
         UpdateGameDataAction -= UpdateGameData;
         ResetGameDataAction -= ResetGameData;
         ShowPauseAction -= ShowPauseMenu;
+        ShowAbilityMenuAction -= ShowAbilityMenu;
     }
 }

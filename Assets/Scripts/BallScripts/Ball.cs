@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D),typeof(Rigidbody2D))]
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour,IBuffable
 {
     [SerializeField] private SoundPlayer _soundPlayer;
     
@@ -13,6 +14,8 @@ public class Ball : MonoBehaviour
 
     private Vector2 _currentDirection = Vector2.right;
     private Rigidbody2D _rigidBody;
+
+    private List<IBuff> buffs = new();
 
     public Action ChangeDirectionAction;
 
@@ -38,4 +41,17 @@ public class Ball : MonoBehaviour
     private void OnEnable() => ChangeDirectionAction += ChangeDirection; 
     
     private void OnDisable() => ChangeDirectionAction -= ChangeDirection;
+
+    public void SetBuff(IBuff buff)
+    {
+        buffs.Add(buff);
+        buff.ApplyBuff();
+    }
+
+    public void RemoveBuff(IBuff buff)
+    {
+        if (!buffs.Contains(buff)) return;
+        buffs.Remove(buff);
+        buff.CancelBuff();
+    }
 }

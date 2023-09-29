@@ -3,6 +3,12 @@ using UnityEngine;
 public class BallReverseAbility : Iability
 {
     private int _coolDown = 30;
+
+    public void Accept(IVisitor visitor)
+    {
+        visitor.VisitPlayerAbility(this);
+    }
+
     public void ActivateAbility(Player target)
     {
         Ball ball = target.GetBallReference();

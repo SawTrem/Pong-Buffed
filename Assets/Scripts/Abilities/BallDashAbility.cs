@@ -6,6 +6,11 @@ public class BallDashAbility : Iability
 
     private int _cooldown = 5;
 
+    public void Accept(IVisitor visitor)
+    {
+        visitor.VisitPlayerAbility(this);
+    }
+
     public void ActivateAbility(Player target)
     {
         Rigidbody2D rigidbody2D = target.GetBallReference().GetComponent<Rigidbody2D>();

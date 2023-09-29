@@ -21,23 +21,23 @@ public class GameManager : MonoBehaviour, IVisitor
     private int _leftPlayerScore = 0;
 
     private int _playedRounds = 0;
-    readonly private int _needsToPlay = 10;
+    readonly private int _needsToPlay = 8;
 
 
     public Action<PlayerSide> UpdatePlayerScore;
-
     public static Action PauseGameAction;
     public Action ResumeGameAction;
+    public Action<IBonus> SetAbilityAction;
 
     private void Awake()
     {
-        _rightPlayer.SetAbility(new BallDashAbility());
+        /*_rightPlayer.SetAbility(new BallDashAbility());
         _leftPlayer.SetAbility(new BallReverseAbility());
         ScaleBallBuff scalePlayerBuff = new()
         {
             BallTarget = _ball
         };
-        _rightPlayer.SetBuff(scalePlayerBuff);
+        _ball.SetBuff(scalePlayerBuff);*/
     }
 
     private void StartGame() 
@@ -68,9 +68,22 @@ public class GameManager : MonoBehaviour, IVisitor
         _playedRounds++;
         _uiManger.UpdateGameDataAction?.Invoke(_playedRounds, _leftPlayerScore, _rightPlayerScore);
         ResetPositions();
+        if(_playedRounds % 3 == 0) StartAbilityMenu();
         if (_needsToPlay == _playedRounds) { 
            RestartGame();
         }
+    }
+
+    private void StartAbilityMenu()
+    {
+        Time.timeScale = 0f;
+        _uiManger.ShowAbilityMenuAction?.Invoke();
+    }
+
+    private void SetAbility(IBonus bonus) 
+    {
+        bonus.Accept(this);
+        Time.timeScale = 1f;
     }
 
     private void RestartGame()
@@ -91,14 +104,24 @@ public class GameManager : MonoBehaviour, IVisitor
         throw new NotImplementedException();
     }
 
-    public void VisitBallBuff()
+    public void VisitBallBuff(BallBuff ballBuff)
     {
-        throw new NotImplementedException();
+        Debug.Log("BallBuff");
+        ballBuff.BallTarget = _ball;
+        _ball.SetBuff(ballBuff);
     }
 
-    public void VisitPlayerBuff()
+    public void VisitPlayerBuff(PlayerBuff playerBuff)
     {
-        throw new NotImplementedException();
+        Debug.Log("playerBuff");
+        playerBuff.PlayerTarget = _leftPlayer;
+        _leftPlayer.SetBuff(playerBuff);
+    }
+
+    public void VisitPlayerAbility(Iability ability) 
+    {
+        Debug.Log("ability");
+        _leftPlayer.SetAbility(ability);
     }
 
     private void OnEnable()
@@ -106,11 +129,13 @@ public class GameManager : MonoBehaviour, IVisitor
         UpdatePlayerScore += UpdateScore;
         PauseGameAction += PauseGame;
         ResumeGameAction += ResumeGame;
+        SetAbilityAction += SetAbility;
     }
     private void OnDisable()
     {
         UpdatePlayerScore -= UpdateScore;
         PauseGameAction -= PauseGame;
         ResumeGameAction -= ResumeGame;
+        SetAbilityAction -= SetAbility;
     }
 }

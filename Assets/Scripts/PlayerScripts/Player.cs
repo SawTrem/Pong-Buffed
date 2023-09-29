@@ -14,7 +14,7 @@ public class Player : MonoBehaviour,IAbilitable,IBuffable
 
     private Rigidbody2D _rigidBody;
 
-    private Iability _ability = new BallDashAbility();
+    private Iability _ability;
     private bool _isAbleToUseAbility = true;
 
     readonly private List<IBuff> _listOfBuffs = new();
