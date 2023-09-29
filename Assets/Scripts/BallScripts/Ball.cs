@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(CircleCollider2D),typeof(Rigidbody2D))]
@@ -6,15 +7,15 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _movementSpeed = 5.0f;
     private Vector2 _currentDirection = Vector2.right;
     private Rigidbody2D _rigidBody;
-    private Vector2 _currentVector;
+
+    public Action ChangeDirectionAction;
 
     [SerializeField]private SoundPlayer _soundPlayer;
 
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _currentVector = _currentDirection * _movementSpeed;
-        _rigidBody.velocity = _currentVector;
+        _rigidBody.velocity = _currentDirection * _movementSpeed;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -24,10 +25,18 @@ public class Ball : MonoBehaviour
         {
             _currentDirection *= -1;
             yvalue = ( this.transform.position.y - collision.transform.position.y ) / collision.collider.bounds.size.y;
-            _currentVector = new Vector2(_currentDirection.x, yvalue);
+            _rigidBody.velocity = new Vector2(_currentDirection.x, yvalue) * _movementSpeed;
         }
-        else
-            _currentVector.y *= -1; 
-        _rigidBody.velocity =_currentVector * _movementSpeed;
+    }
+
+    private void ChangeDirection() => _currentDirection *= -1;
+
+    private void OnEnable()
+    {
+        ChangeDirectionAction += ChangeDirection; 
+    }
+    private void OnDisable()
+    {
+        ChangeDirectionAction -= ChangeDirection;
     }
 }

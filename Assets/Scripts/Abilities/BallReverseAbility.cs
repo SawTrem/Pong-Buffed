@@ -1,12 +1,14 @@
 using UnityEngine;
 
-public class BallReverseAbility : MonoBehaviour, Iability
+public class BallReverseAbility : Iability
 {
     private int _coolDown = 30;
     public void ActivateAbility(Player target)
     {
-        Rigidbody2D ballRigidBody = target.GetBallReference().GetComponent<Rigidbody2D>();
+        Ball ball = target.GetBallReference();
+        Rigidbody2D ballRigidBody = ball.GetComponent<Rigidbody2D>();
         ballRigidBody.velocity *= -1;
+        ball.ChangeDirectionAction?.Invoke();
     }
 
     public int GetCooldown() => _coolDown;

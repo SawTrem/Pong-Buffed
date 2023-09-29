@@ -1,14 +1,14 @@
 using UnityEngine;
 
-public class DashAbility : MonoBehaviour, Iability
+public class DashAbility : Iability
 {
-    [SerializeField] private float _dashPower = 2.0f;
+    [SerializeField] private float _dashPower = 30.0f;
 
     private int _coolDown = 3;
     public void ActivateAbility(Player target)
     {
         Rigidbody2D targetrigitBody = target.GetComponent<Rigidbody2D>();
-        targetrigitBody?.AddForce(targetrigitBody.velocity * _dashPower,ForceMode2D.Impulse);
+        targetrigitBody.velocity *= _dashPower;
     }
 
     public int GetCooldown() => _coolDown;

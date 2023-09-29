@@ -1,12 +1,11 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D), typeof(Rigidbody2D))]
 public class Player : MonoBehaviour,IAbilitable
 {
     [SerializeField] private float _movementSpeed = 2.0f;
-    private Iability _ability = new BallReverseAbility();
+    private Iability _ability = new BallDashAbility();
 
     [SerializeField] private Ball _ball;
 
@@ -26,16 +25,18 @@ public class Player : MonoBehaviour,IAbilitable
 
     public void UseAbility() 
     {
-        if(_isAbleToUseAbility)
-        _ability?.ActivateAbility(this);
+        if (!_isAbleToUseAbility) return;
+        _ability.ActivateAbility(this);
         StartCoroutine(CoolDownAbility(_ability.GetCooldown()));
     }
 
     IEnumerator CoolDownAbility(int coolDownSeconds)
     {
+        Debug.Log("start");
         _isAbleToUseAbility = false;
         yield return new WaitForSeconds(coolDownSeconds);
         _isAbleToUseAbility = true;
+        Debug.Log("end");
     }
 
     public Ball GetBallReference() => _ball;

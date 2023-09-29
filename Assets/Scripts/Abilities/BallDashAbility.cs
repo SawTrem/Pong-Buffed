@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BallDashAbility : MonoBehaviour, Iability
+public class BallDashAbility : Iability
 {
     private float _dashBall = 2.0f;
 
