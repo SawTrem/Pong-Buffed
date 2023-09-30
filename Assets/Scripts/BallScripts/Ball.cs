@@ -35,7 +35,7 @@ public class Ball : MonoBehaviour,IBuffable
     {
         _soundHitPlayer.PlaySoundAction.Invoke();
         _particleEmission.EmitParticleAction.Invoke();
-        StartCoroutine(_shakeCamera.Shake(_shakeDuration, _shakeAmount));
+        //StartCoroutine(_shakeCamera.Shake(_shakeDuration, _shakeAmount));
         float yvalue;
         if (collision.gameObject.GetComponent<Player>())
         {
