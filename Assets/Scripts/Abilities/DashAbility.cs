@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DashAbility : Iability
 {
-    [SerializeField] private float _dashPower = 100.0f;
+    [SerializeField] private float _dashPower = 10.0f;
 
-    readonly private int _coolDown = 3;
+    readonly private int _coolDown = 5;
 
     public void Accept(IVisitor visitor)
     {

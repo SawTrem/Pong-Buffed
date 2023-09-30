@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BallDashAbility : Iability
 {
-    readonly private float _dashBall = 2.0f;
+    readonly private float _dashBall = 1.5f;
 
     readonly private int _cooldown = 5;
 

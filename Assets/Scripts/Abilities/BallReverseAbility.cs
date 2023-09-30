@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BallReverseAbility : Iability
 {
-    readonly private int _coolDown = 30;
+    readonly private int _coolDown = 15;
 
     public void Accept(IVisitor visitor)
     {

@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class SoundPlayer : MonoBehaviour
 {
-    [SerializeField] private AudioSource soundHit;
-    public Action PlayHitSoundAction;
+    [SerializeField] private AudioClip audioClip;
+    [SerializeField] private AudioSource audioSource;
+    public Action PlaySoundAction;
 
-    private void PlayHitSound() {
-        soundHit.Play();   
+    private void PlaySound() 
+    {
+        audioSource.PlayOneShot(audioClip);
     }
-
     private void OnEnable()
     {
-        PlayHitSoundAction += PlayHitSound;
+        PlaySoundAction += PlaySound;
     }
     private void OnDisable()
     {
-        PlayHitSoundAction -= PlayHitSound;
+        PlaySoundAction -= PlaySound;
     }
 }
