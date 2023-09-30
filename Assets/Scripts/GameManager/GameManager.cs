@@ -9,6 +9,7 @@ public enum PlayerSide
     leftPlayer
 }
 
+[RequireComponent(typeof(SoundPlayer))]
 public class GameManager : MonoBehaviour, IVisitor
 {
     [SerializeField] private Ball _ball;
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour, IVisitor
 
     private int _playedRounds = 0;
     readonly private int _needsToPlay = 8;
+        readonly private int _needsToWin = 7;
     private PlayerSide _lastLostPlayer;
 
 
@@ -98,10 +100,15 @@ public class GameManager : MonoBehaviour, IVisitor
         _uiManger.UpdateGameDataAction?.Invoke(_playedRounds, _leftPlayerScore, _rightPlayerScore);
         
         ResetPositions();
-        if(_playedRounds % 3 == 0) StartAbilityMenu();
-        if (_needsToPlay == _playedRounds) { 
-           StopGame();
+        if (_needsToWin == _leftPlayerScore || _needsToWin == _rightPlayerScore)
+        {
+            StopGame();
         }
+        else
+        if(_playedRounds % 3 == 0) StartAbilityMenu();
+        //if (_needsToPlay == _playedRounds) { 
+        //   StopGame();
+        //}
     }
 
     private void StartAbilityMenu()

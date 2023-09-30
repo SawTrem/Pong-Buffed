@@ -5,12 +5,17 @@ using UnityEngine;
 [RequireComponent(typeof(CircleCollider2D),typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour,IBuffable
 {
-    [SerializeField] private SoundPlayer _soundPlayer;
-    
-    readonly private float _defaultmovementSpeed = 7.0f;
-    readonly private Vector2 _defaultScale = Vector2.one;
-    public float CurrentMovementSpeed { get; set; } = 7.0f;
-    public Vector2 CurrentScale { get; set; } = Vector2.one;
+    [SerializeField] private SoundPlayer _soundHitPlayer;
+    [SerializeField] private SoundPlayer _soundHurtPlayer;
+    [SerializeField] private ParticleEmission _particleEmission;
+    [SerializeField] private ShakeCamera _shakeCamera;
+
+    readonly private float _shakeDuration = 0.1f;
+    readonly private float _shakeAmount = 0.1f;
+    readonly private float _defaultmovementSpeed = 10.0f;
+    readonly private Vector2 _defaultScale = new Vector2(0.7f, 0.7f);
+    public float CurrentMovementSpeed { get; set; } = 10.0f;
+    public Vector2 CurrentScale { get; set; } = new Vector2(0.7f, 0.7f);
 
     private Vector2 _currentDirection = Vector2.right;
     private Rigidbody2D _rigidBody;
@@ -18,6 +23,7 @@ public class Ball : MonoBehaviour,IBuffable
     readonly private List<IBuff> buffs = new();
 
     public Action ChangeDirectionAction;
+
 
     private void Start()
     {
@@ -27,7 +33,9 @@ public class Ball : MonoBehaviour,IBuffable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        _soundPlayer.PlayHitSoundAction.Invoke();
+        _soundHitPlayer.PlaySoundAction.Invoke();
+        _particleEmission.EmitParticleAction.Invoke();
+        //StartCoroutine(_shakeCamera.Shake(_shakeDuration, _shakeAmount));
         float yvalue;
         if (collision.gameObject.GetComponent<Player>())
         {
@@ -35,6 +43,11 @@ public class Ball : MonoBehaviour,IBuffable
             yvalue = ( transform.position.y - collision.transform.position.y ) / collision.collider.bounds.size.y;
             _rigidBody.velocity = new Vector2(_currentDirection.x, yvalue) * CurrentMovementSpeed;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        _soundHurtPlayer.PlaySoundAction.Invoke();
     }
 
     private void ChangeDirection() => _currentDirection *= -1;
